@@ -20,13 +20,25 @@ public class GridCreator : MonoBehaviour {
 
 
     public void CreateGrid() {
-
         Grid grid = Instantiate(gridPrefab) as Grid;
+        grid.xLength = xLength;
+        grid.yLength = yLength;
+        grid.tiles = new TwoDTileArray(xLength, yLength);
         for (int x = 0; x < xLength; x++)
         {
             for (int y = 0; y < yLength; y++)
             {
-                CreateTile(new Coordinate(x,y), grid);
+                Tile tile = CreateTile(new Coordinate(x,y), grid);
+                grid.tiles[x,y] = tile;
+                if (x == 0 && y == 0)
+                {
+                    AStarUtility.startTile = tile;
+                    print(AStarUtility.startTile);
+                }
+                else if (x == xLength - 1 && y == yLength - 1) {
+                    AStarUtility.endTile = tile;
+                    print(AStarUtility.endTile);
+                }
             }
         }
     }

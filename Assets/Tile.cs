@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Tile : MonoBehaviour {
 
@@ -16,6 +17,9 @@ public class Tile : MonoBehaviour {
 
     public Turret turret;
 
+    public AStarUtility aStarValues;
+
+
     void Start()
     {
         renderer = GetComponent<Renderer>();
@@ -30,19 +34,24 @@ public class Tile : MonoBehaviour {
     }
 
     public void SetNotWalkable() {
-        this.transform.parent = grid.nonWalkables;
-        grid.ResetNavMesh();
+        aStarValues.isObstacle = true;
+        grid.GetShortestPath();
     }
 
     public void SetWalkable()
     {
-        this.transform.parent = grid.walkables;
-        grid.ResetNavMesh();
+        aStarValues.isObstacle = false;
+        grid.GetShortestPath();
+
     }
 
     void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (EventSystem.current.IsPointerOverGameObject()) {
+            return;
+        }
+
+            if (Input.GetMouseButtonDown(0))
         {
             // Set Tile Color 
             if (activeTile != null) {
@@ -69,8 +78,44 @@ public class Tile : MonoBehaviour {
 
     void OnMouseExit()
     {
+
         if (activeTile != this) {
             renderer.material.color = originalColor;
         }
+    }
+
+    public List<Tile> GetSurroundingTiles() {
+        int gridX = grid.xLength;
+        int gridY = grid.yLength;
+        int thisX = coordinate.x;
+        int thisY = coordinate.y;
+        List<Tile> surroundingTiles = new List<Tile>();
+
+        // Check up
+        if (thisY < gridY - 1) {
+            if(grid.tiles[thisX, thisY + 1].aStarValues.NeedsToBeChecked())
+                surroundingTiles.Add(grid.tiles[thisX, thisY + 1]);
+        }
+        // Check right
+        if (thisX < gridX - 1)
+        {
+            if (grid.tiles[thisX + 1, thisY].aStarValues.NeedsToBeChecked())
+                surroundingTiles.Add(grid.tiles[thisX + 1, thisY]);
+        }
+        // Check left 
+        if (thisX > 0)
+        {
+            if (grid.tiles[thisX - 1, thisY].aStarValues.NeedsToBeChecked())
+                surroundingTiles.Add(grid.tiles[thisX - 1, thisY]);
+        }
+
+        // Check down 
+        if (thisY > 0)
+        {
+            if (grid.tiles[thisX, thisY - 1].aStarValues.NeedsToBeChecked())
+                surroundingTiles.Add(grid.tiles[thisX, thisY - 1]);
+        }
+
+        return surroundingTiles;
     }
 }

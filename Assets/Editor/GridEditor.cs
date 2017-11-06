@@ -11,9 +11,9 @@ public class GridEditor : Editor {
         DrawDefaultInspector();
 
         Grid gridScript = (Grid)target;
-        if (GUILayout.Button("Build NavMesh"))
+        if (GUILayout.Button("Create Shortest Path"))
         {
-            gridScript.ResetNavMesh();
+            gridScript.GetShortestPath();
         }
     }
 }
