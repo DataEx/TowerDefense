@@ -13,7 +13,7 @@ public class GridEditor : Editor {
         Grid gridScript = (Grid)target;
         if (GUILayout.Button("Create Shortest Path"))
         {
-            gridScript.GetShortestPath();
+            gridScript.UpdateNavigationPath();
         }
     }
 }

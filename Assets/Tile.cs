@@ -35,14 +35,13 @@ public class Tile : MonoBehaviour {
 
     public void SetNotWalkable() {
         aStarValues.isObstacle = true;
-        grid.GetShortestPath();
+        grid.UpdateNavigationPath();
     }
 
     public void SetWalkable()
     {
         aStarValues.isObstacle = false;
-        grid.GetShortestPath();
-
+        grid.UpdateNavigationPath();
     }
 
     void OnMouseOver()
@@ -51,24 +50,26 @@ public class Tile : MonoBehaviour {
             return;
         }
 
-            if (Input.GetMouseButtonDown(0))
-        {
+        if (Input.GetMouseButtonDown(0))
+            {
             // Set Tile Color 
             if (activeTile != null) {
                 activeTile.GetComponent<Renderer>().material.color = originalColor;
             }
             renderer.material.color = mouseClickColor;
 
+            activeTile = this;
+
             // Set Active Menu
             if (turret == null)
             {
+                MenuController.constructTowerMenu.CheckBuyAbility();
                 MenuController.SetActiveMenu(MenuController.constructTowerMenu);
             }
             else {
                 MenuController.SetActiveMenu(MenuController.turretDetailMenu);
+                MenuController.turretDetailMenu.UpdateUI();
             }
-
-            activeTile = this;
         }
 
         if(this != activeTile){
@@ -83,6 +84,8 @@ public class Tile : MonoBehaviour {
             renderer.material.color = originalColor;
         }
     }
+
+
 
     public List<Tile> GetSurroundingTiles() {
         int gridX = grid.xLength;

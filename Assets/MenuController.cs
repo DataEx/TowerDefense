@@ -13,6 +13,12 @@ public class MenuController : MonoBehaviour {
     public CurrencyUIController currencyUIPublic;
     public static CurrencyUIController currencyUI;
 
+    public MessageUI messageUIPublic;
+    public static MessageUI messageUI;
+
+    public LivesUI livesUIPublic;
+    public static LivesUI livesUI;
+
 
     static Menu[] menus;
 
@@ -20,6 +26,8 @@ public class MenuController : MonoBehaviour {
         constructTowerMenu = constructTowerMenuPublic;
         turretDetailMenu = turretDetailMenuPublic;
         currencyUI = currencyUIPublic;
+        messageUI = messageUIPublic;
+        livesUI = livesUIPublic;
 
         menus = new Menu[] { constructTowerMenu, turretDetailMenu };
     }
@@ -36,9 +44,9 @@ public class MenuController : MonoBehaviour {
 
     public static void RecheckAfforadability() {
         int currencyAvailable = CurrencyController.currencyAvailable;
-        constructTowerMenu.buyButton.interactable = constructTowerMenu.turretPrice <= currencyAvailable;
-        turretDetailMenu.upgradeButton.interactable = turretDetailMenu.upgradeCost <= currencyAvailable;
-    }
 
-    //void ToggleButtonVisibility
+        constructTowerMenu.SetBuyButtonActive(constructTowerMenu.turretForSale.cost <= currencyAvailable);
+        if (turretDetailMenu.currentTower != null && turretDetailMenu.currentTower.upgradesTo != null)
+            turretDetailMenu.SetUpgradeButtonActive(turretDetailMenu.currentTower.upgradesTo.cost <= currencyAvailable);
+    }
 }

@@ -16,4 +16,9 @@ public class CurrencyController : MonoBehaviour {
         currencyAvailable += diff;
         MenuController.currencyUI.UpdateCurrency();
     }
+
+    public static bool CanAfford(int cost)
+    {
+        return cost <= currencyAvailable;
+    }
 }

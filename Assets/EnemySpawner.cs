@@ -31,15 +31,23 @@ public class EnemySpawner : MonoBehaviour {
 
     void SpawnEnemy() {
         Enemy enemy = Instantiate(enemyToSpawn) as Enemy;
-        enemy.transform.position = this.transform.position;
+        enemy.transform.position = AStarUtility.startTile.transform.position;
         enemy.spawner = this;
         enemy.route = grid.navigationPath;
     }
 
     void Update() {
         if (enemiesDestroyed == enemiesToSpawn) {
-            print("You beat the level!");
             levelController.EndLevel();
         }
+    }
+
+    public void IncrementEnemiesDestroyed() {
+        enemiesDestroyed++;
+        MenuController.messageUI.UpdateEnemiesRemaining(GetEnemiesRemaining());
+    }
+
+    public int GetEnemiesRemaining() {
+        return enemiesToSpawn - enemiesDestroyed;
     }
 }

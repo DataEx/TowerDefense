@@ -17,19 +17,27 @@ public class Grid : MonoBehaviour {
     void Start() {
         AStarUtility.startTile = tiles[0, 0];
         AStarUtility.endTile = tiles[xLength - 1, yLength - 1];
-        GetShortestPath();
+        UpdateNavigationPath();
     }
 
-    public void GetShortestPath() {
+    public void UpdateNavigationPath() {
+        navigationPath = GetShortestPath();
+    }
+
+    public List<Tile> GetShortestPath() {
         ResetTileCosts();
+
+        if (AStarUtility.startTile.aStarValues.isObstacle || AStarUtility.endTile.aStarValues.isObstacle)
+            return null;
+
         List<Tile> tilesToExamine = new List<Tile>();
         tilesToExamine.Add(AStarUtility.startTile);
         while(tilesToExamine.Count > 0) {
             Tile currentTile = GetNextExaminedTile(tilesToExamine);
 
             if (currentTile == AStarUtility.endTile) {
-                navigationPath = CreateNavigationPath();
-                break;
+                List<Tile> path = CreateNavigationPath();
+                return path;
             }
 
 
@@ -45,6 +53,7 @@ public class Grid : MonoBehaviour {
             tilesToExamine.Remove(currentTile);
         }
 
+        return null;
     }
 
     List<Tile> CreateNavigationPath() {

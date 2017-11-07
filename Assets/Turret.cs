@@ -10,7 +10,9 @@ public class Turret : MonoBehaviour {
     float turnSpeed = 10f;
     public Bullet bulletPrefab;
     public float timeBetweenFire;
-
+    public Turret upgradesTo;
+    public int cost;
+    public int sellValue;
 
     Enemy target;
     List<Enemy> enemiesInRange = new List<Enemy>();

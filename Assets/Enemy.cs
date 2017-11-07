@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour {
     public float timeToMoveBetweenTiles; 
     public EnemySpawner spawner;
     public List<Tile> route;
-    int indexAlongRoute = 0;
+    int indexAlongRoute = 1;
     public float health = 3;
     public int rewardOnDestroy;
 
@@ -29,6 +29,9 @@ public class Enemy : MonoBehaviour {
             this.transform.position = targetPosition;
             indexAlongRoute++;
         }
+        LivesController.DecrementLives();
+        spawner.IncrementEnemiesDestroyed();
+        Destroy(this.gameObject);
     }
 
 
@@ -39,9 +42,9 @@ public class Enemy : MonoBehaviour {
             float damageDealt = collider.GetComponent<Bullet>().damage;
             health -= damageDealt;
             Destroy(collider.gameObject);
-            if (health < 0) {
+            if (health == 0) {
                 CurrencyController.AdjustCurrency(rewardOnDestroy);
-                spawner.enemiesDestroyed++;
+                spawner.IncrementEnemiesDestroyed();
                 Destroy(this.gameObject);
             }
         }
