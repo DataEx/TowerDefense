@@ -19,6 +19,9 @@ public class MenuController : MonoBehaviour {
     public LivesUI livesUIPublic;
     public static LivesUI livesUI;
 
+    public WinLoseUI winLoseUIPublic;
+    public static WinLoseUI winLoseUI;
+
 
     static Menu[] menus;
 
@@ -28,6 +31,7 @@ public class MenuController : MonoBehaviour {
         currencyUI = currencyUIPublic;
         messageUI = messageUIPublic;
         livesUI = livesUIPublic;
+        winLoseUI = winLoseUIPublic;
 
         menus = new Menu[] { constructTowerMenu, turretDetailMenu };
     }

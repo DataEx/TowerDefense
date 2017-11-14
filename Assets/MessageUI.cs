@@ -46,7 +46,8 @@ public class MessageUI : MonoBehaviour {
         SetMessageActive(congratulationsMessage);
 
         if (levelController.GetLevelNumber() < levelController.levels.Length) {
-            StartCoroutine(WaitBetweenCongratulationAndNextRoundMessages());
+            if(!MenuController.winLoseUI.canvas.activeSelf)
+                StartCoroutine(WaitBetweenCongratulationAndNextRoundMessages());
         }
     }
 

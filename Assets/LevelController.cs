@@ -28,8 +28,7 @@ public class LevelController : MonoBehaviour {
         currentLevel++;
 
         if (currentLevel >= levels.Length && LivesController.livesLeft > 0) {
-            print("You Win!");
-            // Display You Win Message
+            MenuController.winLoseUI.EnableWinUI();
         }
     }
 
