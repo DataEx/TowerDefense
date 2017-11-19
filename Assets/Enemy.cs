@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour {
     int indexAlongRoute = 1;
     public float health = 3;
     public int rewardOnDestroy;
+    public GameObject explosionObject;
 
     void Start() {
         StartCoroutine(MoveAlongPath());
@@ -43,10 +44,16 @@ public class Enemy : MonoBehaviour {
             health -= damageDealt;
             Destroy(collider.gameObject);
             if (health == 0) {
+                CreateExplosionEffect();
                 CurrencyController.AdjustCurrency(rewardOnDestroy);
                 spawner.IncrementEnemiesDestroyed();
                 Destroy(this.gameObject);
             }
         }
+    }
+
+    void CreateExplosionEffect() {
+        GameObject explosion = Instantiate(explosionObject);
+        explosion.transform.position = this.transform.position;
     }
 }
